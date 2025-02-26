@@ -28,11 +28,11 @@ python3 -m src.bench_vllm \
     --max_samples -1 \ # if > 0 you set a maximun prompt to consider for the execution, useful for debug
     --batch_size 8 \ # this is considered only for COT
     --cache_dir None \
-    --n_out_sequences 8 \ # for maj@8
-    --temperature 0.7 \
+    --n_out_sequences 8 \ # set to 8 for maj@8, while to 1 for pass@1
+    --temperature 0.7 \ # set = 0 for pass@1, while set to > 0 for maj@8
     --top_p 0.8 \
     --mode cot \
-    --text_only True \ # ignoring images
+    --text_only True \ # set True to use text-only problems
     --n_gpus 1 \
 ```
 
@@ -46,11 +46,11 @@ python3 -m src.bench_vllm \
     --max_samples -1 \ # if > 0 you set a maximun prompt to consider for the execution, useful for debug
     --cache_dir None \
     --n_out_sequences 1 \ 
-    --n_sampling 8 \ # used only for tir for maj@8
+    --n_sampling 8 \ # used only for tir: set to 8 for maj@8, while to 1 for pass@1
     --temperature 0.7 \
     --top_p 0.8 \
     --mode tir \
-    --text_only True \ # ignoring images
+    --text_only True \ # set True to use text-only problems
     --n_gpus 1 \
     --n_rounds 3 # number of rounds to run ONLY for TIR
 ```
@@ -67,15 +67,16 @@ python3 -m src.bench_vllm_multimodal \
     --max_samples -1 \
     --batch_size 4 \
     --cache_dir None \
-    --n_out_sequences 8 \
-    --temperature 0.8 \
+    --n_out_sequences 8 \ # set to 8 for maj@8, while to 1 for pass@1
+    --temperature 0.8 \ # set = 0 for pass@1, while set to > 0 for maj@8
     --top_p 1.0 \
     --mode cot \
-    --text_only False \
+    --text_only False \ # set True to use multimodal problems (text + images)
     --n_gpus 1 
 ```
 
 ## OpenAI Batch Inference
+Currently supporting only CoT greedy decoding.
 
 ```bash
 python3 -m src.bench_openai_batch \
@@ -85,11 +86,11 @@ python3 -m src.bench_openai_batch \
     --start_idx 0 \
     --top_p 1.0 \
     --n_sampling 1 \
-    --n_out_sequences 1 \
-    --temperature 0.0 \
+    --n_out_sequences 1 \ 
+    --temperature 0.0 \ 
     --mode cot \
-    --text_only False \
-    --img_only True
+    --text_only False \ # set True to use text-only problems
+    --img_only True # set True to use multimodal problems (text + images)
 ```
 To extract batch results:
 
@@ -100,6 +101,7 @@ python3 -m src.batch_results \
 ```
 
 ## DeepSeek Inference
+Currently supporting only CoT greedy decoding. Multimodality is NOT supported for deepseek's model.
 
 ```bash
 python3 -m src.bench_openai \
@@ -112,10 +114,11 @@ python3 -m src.bench_openai \
     --n_out_sequences 1 \
     --temperature 0.0 \
     --mode cot \
-    --text_only True
+    --text_only True # set True to use text-only problems 
 ```
 
 ## Gemini Inference
+Currently supporting only CoT greedy decoding.
 
 ```bash
 python3 -m src.bench_gemini \
@@ -128,8 +131,8 @@ python3 -m src.bench_gemini \
     --n_sampling 1 \
     --temperature 0.0 \
     --mode cot \
-    --text_only False \
-    --img_only True
+    --text_only False \ # set True to use text-only problems (text + images)
+    --img_only True # set True to use multimodal problems (text + images)
 ```
 
 
