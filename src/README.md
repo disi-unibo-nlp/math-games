@@ -57,7 +57,7 @@ python3 -m src.bench_vllm \
 ### Run the code
 For convenience, a shell script is provided to execute the vLLM benchmark:
 ```bash
-./src/bench_vllm.sh
+./scripts/bench_vllm.sh
 ```
 
 ### Example of TIR conversation
