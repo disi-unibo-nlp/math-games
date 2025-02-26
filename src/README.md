@@ -91,13 +91,20 @@ python3 -m src.bench_openai_batch \
     --text_only False \
     --img_only True
 ```
+To extract batch results:
+
+```bash
+python3 -m src.batch_results \
+    --batch_id "API batch id" \
+    --out_dir "out/batch_api/2025-01-02_15-08-45" \
+```
 
 ## DeepSeek Inference
 
 ```bash
 python3 -m src.bench_openai \
     --model_name "deepseek-reasoner" \
-    --dataset_name "" \
+    --dataset_name "path to HF repo" \
     --out_dir "./out" \
     --max_samples -1 \
     --start_idx 10 \
@@ -108,5 +115,21 @@ python3 -m src.bench_openai \
     --text_only True
 ```
 
+## Gemini Inference
+
+```bash
+python3 -m src.bench_gemini \
+    --model_name "gemini-2.0-flash-thinking-exp" \
+    --dataset_name "path to HF repo" \
+    --max_samples -1 \
+    --start_idx 0 \
+    --top_p 1.0 \
+    --top_k 40 \
+    --n_sampling 1 \
+    --temperature 0.0 \
+    --mode cot \
+    --text_only False \
+    --img_only True
+```
 
 
