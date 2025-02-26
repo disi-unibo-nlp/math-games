@@ -6,12 +6,12 @@
   * Create a `.env` file in the root directory of the project.
   * Add the following API keys, replacing `<your_key>` and `<your_token>` with your actual credentials:
 
-  ```
-  HF_TOKEN=<your_token>
-  OPENAI_KEY=<your_key>
-  GEMINI_API_KEY=<your_key>
-  DEEPSEEK_API_KEY=<your_key>
-  ```
+  ```ini
+   HF_TOKEN=<your_token>
+   OPENAI_KEY=<your_key>
+   GEMINI_API_KEY=<your_key>
+   DEEPSEEK_API_KEY=<your_key>
+   ```
 
 ## vLLM Inference
 
