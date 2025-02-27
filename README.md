@@ -16,7 +16,7 @@ To reconstruct the **multimodal exercises**, please download the corresponding i
 
 ## 🔎 Dataset Inspection 
 
-Run this script to quickly preprocess and inspect the dataset. Ensure that the images are stored within a local `images/` folder.
+Run this script to quickly preprocess and inspect the dataset. Ensure that the images are stored within a local folder `images/`.
 
 ```python
 from datasets import load_dataset
@@ -109,5 +109,5 @@ dataset_multimodal = dataset.filter(lambda example: example['image'] is not None
 | GPT-4o-mini              | cot    | pass@1    |              14.6 |                       20.0 |                         16.7 |                        9.3 |                   22.6 |                   18.2 |                   14.6 |                   11.9 |                   10.3 |                    9.5 |                    9.3 |
 | InternVL-2.5-38B-MPO     | cot    | pass@1    |              14.4 |                       19.0 |                         18.8 |                        7.4 |                   16.5 |                   16.6 |                   14.2 |                   12.5 |                   11.7 |                    9.2 |                    7.6 |
 | InternVL-2.5-38B         | cot    | pass@1    |              13.7 |                       17.6 |                         17.0 |                        8.3 |                   14.8 |                   14.6 |                   13.6 |                   11.5 |                    9.9 |                    7.4 |                    6.6 |
-| Phi3.5                   | cot    | pass@1    |              12.3 |                       10.2 |                         12.0 |                       14.1 |                   14.8 |                   15.3 |                   12.9 |                   12.7 |                   12.5 |                   12.7 |                   14.2 |
-| Phi3.5                   | cot    | maj@8     |              11.8 |                       17.6 |                         12.0 |                        8.0 |                   24.4 |                   11.2 |                   11.4 |                   11.1 |                   10.3 |                    7.4 |                    7.1 |
+| Phi-3.5-mini                   | cot    | pass@1    |              12.3 |                       10.2 |                         12.0 |                       14.1 |                   14.8 |                   15.3 |                   12.9 |                   12.7 |                   12.5 |                   12.7 |                   14.2 |
+| Phi-3.5-mini                   | cot    | maj@8     |              11.8 |                       17.6 |                         12.0 |                        8.0 |                   24.4 |                   11.2 |                   11.4 |                   11.1 |                   10.3 |                    7.4 |                    7.1 |
