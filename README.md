@@ -70,6 +70,14 @@ dataset_multimodal = dataset.filter(lambda example: example['image'] is not None
 
 ---
 
+## Run Experiments  
+
+To reproduce the experiments, refer to the README inside **[`src/`](src/)**.  
+It contains scripts and detailed instructions for running experiments with LLMs using **vLLM** and APIs such as **OpenAI, DeepSeek, and Gemini**.  
+
+
+---
+
 ## Results 
 
 ### All Problems 
