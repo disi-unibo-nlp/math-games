@@ -21,7 +21,7 @@ We support two inference modes: Chain-of-Thought (CoT) and Tool-Integrated-Reaso
 **CoT:**
 
 ```bash
-python3 -m src.bench_vllm \
+python3 -m src.inference.bench_vllm \
     --model_name "Qwen/Qwen2.5-Math-7B-Instruct" \
     --dataset_name "path to HF repo" \
     --out_dir "./out" \
@@ -39,7 +39,7 @@ python3 -m src.bench_vllm \
 **TIR:**
 
 ```bash
-python3 -m src.bench_vllm \
+python3 -m src.inference.bench_vllm \
     --model_name "Qwen/Qwen2.5-Math-7B-Instruct" \
     --dataset_name "path to HF repo" \
     --out_dir "./out" \
@@ -60,7 +60,7 @@ python3 -m src.bench_vllm \
 Only CoT is supported for multimodality.
 
 ```bash
-python3 -m src.bench_vllm_multimodal \
+python3 -m src.inference.bench_vllm_multimodal \
     --model_name "Qwen/Qwen2-VL-7B-Instruct" \
     --dataset_name "path to HF repo" \
     --out_dir "./out" \
@@ -79,7 +79,7 @@ python3 -m src.bench_vllm_multimodal \
 Currently supporting only CoT greedy decoding.
 
 ```bash
-python3 -m src.bench_openai_batch \
+python3 -m src.inference.bench_openai_batch \
     --model_name "gpt-4o-2024-08-06" \
     --dataset_name "path to HF repo" \
     --max_samples -1 \
@@ -95,7 +95,7 @@ python3 -m src.bench_openai_batch \
 To extract batch results:
 
 ```bash
-python3 -m src.batch_results \
+python3 -m src.utils.batch_results \
     --batch_id "API batch id" \
     --out_dir "out/batch_api/2025-01-02_15-08-45" \
 ```
@@ -104,7 +104,7 @@ python3 -m src.batch_results \
 Currently supporting only CoT greedy decoding. Multimodality is NOT supported for deepseek's model.
 
 ```bash
-python3 -m src.bench_openai \
+python3 -m src.inference.bench_openai \
     --model_name "deepseek-reasoner" \
     --dataset_name "path to HF repo" \
     --out_dir "./out" \
@@ -121,7 +121,7 @@ python3 -m src.bench_openai \
 Currently supporting only CoT greedy decoding.
 
 ```bash
-python3 -m src.bench_gemini \
+python3 -m src.inference.bench_gemini \
     --model_name "gemini-2.0-flash-thinking-exp" \
     --dataset_name "path to HF repo" \
     --max_samples -1 \
