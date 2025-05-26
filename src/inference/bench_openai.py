@@ -126,7 +126,7 @@ if __name__ == "__main__":
     if args.start_idx > 0 and args.max_samples < 0: # to use for debug
         dataset = dataset.select(range(args.start_idx, len(dataset)))
     
-    os.makedirs('out/completions/openai', exist_ok=True)
+    os.makedirs(f'out/completions/{MODEL_NAME}', exist_ok=True)
     
     for i, item in enumerate(tqdm(dataset)): 
         prompt = item['question']
@@ -137,7 +137,7 @@ if __name__ == "__main__":
 
         model = response.model
         usage = dict(response.usage) if args.model_name  != "deepseek-reasoner" else ""
-        with open(f'out/completions/openai/completion_{MODEL_NAME}_cot.jsonl', 'a') as f:    
+        with open(f'out/completions/{MODEL_NAME}/completion_{MODEL_NAME}_cot.jsonl', 'a') as f:    
             result = {
                 "model": model,
                 "id": item['id'],
