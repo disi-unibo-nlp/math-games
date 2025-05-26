@@ -86,30 +86,30 @@ It contains scripts and detailed instructions for running experiments with LLMs 
 ### Text-only Problems
 
 <p align="center">
-  <img src="images/text-only-res.png" alt="Result textual problems" width="70%">
+  <img src=".github/images/text-only-res.png" alt="Result textual problems" width="70%">
 </p>
 
 ### Multimodal Problems
 
 <p align="center">
-  <img src="images/multimodal-res.png" alt="Result textual problems" width="70%">
+  <img src=".github/images/multimodal-res.png" alt="Result textual problems" width="70%">
 </p>
 
 ### Overall 
 
 <p align="center">
-  <img src="images/overall-res-mathgames.png" alt="Result textual problems" width="70%">
+  <img src=".github/images/overall-res-mathgames.png" alt="Result textual problems" width="70%">
 </p>
 
 ### Perfomance across years
 
 <p align="center">
-  <img src="images/res-acorss-years-mathgames.png" alt="Result textual problems" width="70%">
+  <img src=".github/images/res-acorss-years-mathgames.png" alt="Result textual problems" width="70%">
 </p>
 
 ### Perfomance across math skills
 
 <p align="center">
-  <img src="images/res-per-cat-mathgames.png" alt="Result textual problems" width="70%">
+  <img src=".github/images/res-per-cat-mathgames.png" alt="Result textual problems" width="70%">
 </p>
 
