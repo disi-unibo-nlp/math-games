@@ -154,13 +154,13 @@
               </p>
             </div>
           </div>
-          <div class="box m-5">
+          <!-- <div class="box m-5">
             <div class="content has-text-centered">
-              <img src="images/abstract_figure.png" alt="overall2" width="40%"/>
+              <img src="images/abstract_figure.png" alt="overall2" width="35%"/>
               <p> <b>Human scores by age group in the 2024 Finals of the International Mathematical and Logical Games Championships (MathGames).</b> Markers indicate model performance for comparison.
               </p>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -206,109 +206,71 @@
       <div class="column is-full has-text-centered content">
 
         <h2 class="title is-3">Textual Problems</h2>
-        <div class="content">
-          <b>CPA (Coherent Pun Accuracy):</b> Correctly recognizing true puns.
-          <br>
-          <b>MPA (Misleading Pun Accuracy):</b> Correctly recognizing false puns.
-          <br>
-          (MPA<sup>−</sup> and MPA<sup>+</sup> stands for whether the original pun's subject has been substituted with a dissimilar or similar item).
-        
-          <table class="js-sort-table" id="results">
-            <tr>
-            <td class="js-sort-number"><strong>#</strong></td>
-            <td class="js-sort-number"><strong>Model</strong></td>
-            <td class="js-sort-number"><strong>CPA</strong></td>
-            <td class="js-sort-number"><strong>MPA<sup>−</sup></strong></td>
-            <td class="js-sort-number"><strong>MPA<sup>+</sup></strong></td>
-            <td class="js-sort-number"><strong>MPA</strong></td>
-            </tr>
-        
-            <tr>
-            <td>1</td>
-            <td>o3-mini ⭐ 🧠</td>
-            <td>78.3</td>
-            <td>6.0</td>
-            <td>3.4</td>
-            <td>4.7</td>
-            </tr>
-            <tr>
-            <td>2</td>
-            <td>Gemini-2.0-Flash-Think ⭐ 🧠</td>
-            <td>71.1</td>
-            <td>6.9</td>
-            <td>24.6</td>
-            <td>15.8</td>
-            </tr>
-            <tr>
-                <td>3</td>
-            <td>LLaMA-3.3 <span style="color:gray;">(70B)</span></td>
-            <td>70.0</td>
-            <td>29.4</td>
-            <td>29.1</td>
-            <td>29.3</td>
-            </tr>
-            <tr>
-                <td>4</td>
-            <td>GPT-4o ⭐</td>
-            <td>64.9</td>
-            <td>14.9</td>
-            <td>17.4</td>
-            <td>16.2</td>
-            </tr>
-            <tr>
-                <td>5</td>
-            <td>Phi-4 <span style="color:gray;">(14B)</span></td>
-            <td>64.6</td>
-            <td>9.4</td>
-            <td>13.7</td>
-            <td>11.6</td>
-            </tr>
-            <tr>
-                <td>6</td>
-            <td>Gemini-2.0-Flash ⭐</td>
-            <td>44.6</td>
-            <td>44.9</td>
-            <td>35.7</td>
-            <td>40.3</td>
-            </tr>
-            <tr>
-                <td>7</td>
-            <td>GPT-4o-mini ⭐</td>
-            <td>36.3</td>
-            <td>10.9</td>
-            <td>11.7</td>
-            <td>23.6</td>
-            </tr>
-            <tr>
-                <td>8</td>
-            <td>LLaMA-3.1 <span style="color:gray;">(8B)</span></td>
-            <td>29.7</td>
-            <td>0.0</td>
-            <td>0.3</td>
-            <td>0.2</td>
-            </tr>
-            <tr>
-                <td>9</td>
-            <td>Phi-3.5 <span style="color:gray;">(3B)</span></td>
-            <td>14.9</td>
-            <td>48.3</td>
-            <td>47.1</td>
-            <td>47.7</td>
-            </tr>
-            <tr style="font-weight: bold;">
-                <td>10</td>
-            <td>Humans 👤</td>
-            <td>87.9</td>
-            <td>87.3</td>
-            <td>94.4</td>
-            <td>90.9</td>
-            </tr>
-        </table>
-        <p style="font-size: 14px;">
-        <strong>Note:</strong> ⭐ Closed-source models. 🧠 Reasoning-focused models.
-        </p>
+<div class="content">
+  <b>CE, C1, C2, L1, L2, GP, HC:</b> Accuracy across age groups.  
+  <br>
+  <b>Avg:</b> Overall average.  
+  <br>
+  
+  <table class="js-sort-table" id="results">
+    <tr>
+      <td><strong>Model</strong></td>
+      <td><strong>CE</strong></td>
+      <td><strong>C1</strong></td>
+      <td><strong>C2</strong></td>
+      <td><strong>L1</strong></td>
+      <td><strong>L2</strong></td>
+      <td><strong>GP</strong></td>
+      <td><strong>HC</strong></td>
+      <td><strong>Avg</strong></td>
+    </tr>
 
-        </div>
+    <tr><td colspan="9"><strong>Closed-Source</strong></td></tr>
+
+    <tr><td>o3-mini-high 🧠</td><td>83.8</td><td>82.0</td><td>81.7</td><td>80.6</td><td>79.2</td><td>77.1</td><td>73.3</td><td>79.7</td></tr>
+    <tr><td>Gemini-2.0-Flash-T 🧠</td><td>81.3</td><td>71.4</td><td>71.0</td><td>69.5</td><td>66.4</td><td>61.9</td><td>59.2</td><td>68.7</td></tr>
+    <tr><td>Gemini-2.0-Flash</td><td>58.9</td><td>56.8</td><td>55.4</td><td>54.0</td><td>51.3</td><td>43.7</td><td>41.2</td><td>51.6</td></tr>
+    <tr><td>Gemini-1.5-Pro</td><td>59.8</td><td>54.3</td><td>53.2</td><td>52.4</td><td>50.2</td><td>43.9</td><td>41.2</td><td>50.7</td></tr>
+    <tr><td>Gemini-1.5-Flash</td><td>60.7</td><td>49.7</td><td>47.4</td><td>45.5</td><td>42.9</td><td>36.9</td><td>36.0</td><td>45.6</td></tr>
+    <tr><td>GPT-4o</td><td>61.7</td><td>50.1</td><td>46.2</td><td>43.8</td><td>42.3</td><td>35.0</td><td>33.0</td><td>44.6</td></tr>
+    <tr><td>GPT-4o-mini</td><td>49.5</td><td>42.2</td><td>42.8</td><td>41.5</td><td>39.8</td><td>31.4</td><td>30.0</td><td>40.4</td></tr>
+    <tr><td>Gemini-1.5-Flash-8B</td><td>40.2</td><td>35.1</td><td>33.9</td><td>31.2</td><td>29.3</td><td>21.8</td><td>20.6</td><td>31.6</td></tr>
+
+    <tr><td colspan="9"><strong>Open-Source &gt; 8B</strong></td></tr>
+
+    <tr><td>DeepSeek-R1 🧠</td><td>85.0</td><td>77.3</td><td>75.9</td><td>74.7</td><td>72.7</td><td>69.7</td><td>69.0</td><td>74.9</td></tr>
+    <tr><td>DeepSeek-V3</td><td>66.4</td><td>54.3</td><td>52.1</td><td>50.7</td><td>48.3</td><td>40.8</td><td>36.5</td><td>49.9</td></tr>
+    <tr><td>Phi-4-14B *</td><td>66.4</td><td>51.9</td><td>48.1</td><td>46.0</td><td>43.7</td><td>37.0</td><td>32.2</td><td>46.5</td></tr>
+    <tr><td>Phi-4-14B</td><td>59.8</td><td>50.4</td><td>45.9</td><td>43.6</td><td>41.1</td><td>33.6</td><td>30.0</td><td>43.5</td></tr>
+    <tr><td>Qwen2.5-72B</td><td>53.3</td><td>48.4</td><td>45.2</td><td>43.3</td><td>41.4</td><td>34.4</td><td>29.6</td><td>42.2</td></tr>
+    <tr><td>QwQ-32B 🧠</td><td>56.1</td><td>43.5</td><td>40.0</td><td>37.3</td><td>34.4</td><td>25.4</td><td>23.2</td><td>37.1</td></tr>
+    <tr><td>LLaMA-3.3-70B</td><td>44.9</td><td>41.5</td><td>39.7</td><td>37.3</td><td>35.7</td><td>26.3</td><td>26.2</td><td>35.9</td></tr>
+    <tr><td>DeepSeek-R1-Qwen 🧠</td><td>44.2</td><td>38.7</td><td>38.0</td><td>36.3</td><td>33.4</td><td>25.8</td><td>19.8</td><td>33.7</td></tr>
+
+    <tr><td colspan="9"><strong>Open-Source ≤ 8B (Math-Specialized)</strong></td></tr>
+
+    <tr><td>Qwen2.5-Math-7B * 🔧</td><td>53.3</td><td>47.9</td><td>48.3</td><td>47.3</td><td>46.9</td><td>39.8</td><td>34.1</td><td>45.4</td></tr>
+    <tr><td>Qwen2.5-Math-7B 🔧</td><td>43.9</td><td>45.4</td><td>44.1</td><td>42.2</td><td>41.2</td><td>33.6</td><td>31.3</td><td>40.2</td></tr>
+    <tr><td>NuminaMath-7B * 🔧</td><td>43.0</td><td>38.8</td><td>38.0</td><td>36.7</td><td>35.3</td><td>26.7</td><td>24.5</td><td>34.7</td></tr>
+    <tr><td>Qwen2.5-Math-7B *</td><td>40.7</td><td>37.0</td><td>38.3</td><td>36.7</td><td>35.6</td><td>27.5</td><td>26.1</td><td>34.6</td></tr>
+    <tr><td>Qwen2.5-Math-7B</td><td>40.2</td><td>36.5</td><td>37.8</td><td>36.2</td><td>35.1</td><td>26.9</td><td>24.9</td><td>33.9</td></tr>
+    <tr><td>NuminaMath-7B 🔧</td><td>39.2</td><td>27.6</td><td>31.1</td><td>29.4</td><td>28.3</td><td>19.8</td><td>18.0</td><td>27.7</td></tr>
+    <tr><td>NuminaMath-7B</td><td>28.8</td><td>25.6</td><td>24.9</td><td>24.1</td><td>23.1</td><td>25.4</td><td>22.4</td><td>24.9</td></tr>
+    <tr><td>Mathstral-7B *</td><td>35.5</td><td>27.2</td><td>26.1</td><td>23.6</td><td>21.8</td><td>16.7</td><td>12.4</td><td>23.3</td></tr>
+    <tr><td>NuminaMath-7B *</td><td>31.8</td><td>25.2</td><td>25.4</td><td>24.2</td><td>22.7</td><td>13.1</td><td>9.0</td><td>21.6</td></tr>
+    <tr><td>DeepSeek-Math-7B * 🔧</td><td>23.4</td><td>24.4</td><td>23.7</td><td>22.9</td><td>21.3</td><td>15.1</td><td>14.2</td><td>20.7</td></tr>
+    <tr><td>Mathstral-7B</td><td>27.1</td><td>22.0</td><td>23.4</td><td>21.3</td><td>20.1</td><td>12.2</td><td>11.2</td><td>19.6</td></tr>
+    <tr><td>DeepSeek-Math-7B *</td><td>21.3</td><td>21.6</td><td>21.9</td><td>20.7</td><td>19.6</td><td>13.2</td><td>10.2</td><td>18.4</td></tr>
+    <tr><td>DeepSeek-Math-7B 🔧</td><td>21.1</td><td>21.4</td><td>21.7</td><td>20.5</td><td>19.3</td><td>12.8</td><td>9.8</td><td>18.1</td></tr>
+    <tr><td>DeepSeek-Math-7B</td><td>20.6</td><td>21.0</td><td>21.4</td><td>20.1</td><td>18.9</td><td>12.5</td><td>9.4</td><td>17.7</td></tr>
+    <tr><td>ToRA-7B * 🔧</td><td>12.2</td><td>11.6</td><td>12.1</td><td>11.5</td><td>11.1</td><td>7.6</td><td>6.4</td><td>10.4</td></tr>
+    <tr><td>ToRA-7B 🔧</td><td>6.5</td><td>11.1</td><td>12.4</td><td>11.8</td><td>11.3</td><td>9.3</td><td>7.7</td><td>10.0</td></tr>
+  </table>
+
+  <p style="font-size: 14px;">
+    <strong>Note:</strong> 🧠 Reasoning-focused; * maj@8 instead of pass@1; 🔧 TIR mode.
+  </p>
+</div>
 
       </div>
     </div>
@@ -329,7 +291,6 @@
   <br>
   <b>Avg:</b> Overall average.  
   <br>
-  🧠 = Reasoning-focused; * = maj@8 instead of pass@1.
   
   <table class="js-sort-table" id="results">
     <tr>
