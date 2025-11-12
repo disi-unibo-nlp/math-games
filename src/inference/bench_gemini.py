@@ -28,7 +28,7 @@ from dataclasses import dataclass, field
 @dataclass
 class ScriptArguments:
     model_name: Optional[str] = field(default="gemini-2.0-flash-thinking-exp", metadata={"help": "model's HF directory or local path"})
-    dataset_name: Optional[str] = field(default="")
+    dataset_name: Optional[str] = field(default="disi-unibo-nlp/MathGames")
     max_samples: Optional[int] = field(default=-1, metadata={"help": "Maximum number of data to process in train set. Default is -1 to process all data."})
     start_idx: Optional[int] = field(default=559, metadata={"help": "Index of first prompt to process."})
     top_p: Optional[float] = field(default=1.0, metadata={"help": "Top p sampling."})
@@ -105,12 +105,11 @@ if __name__ == "__main__":
         model_info = genai.get_model(f"models/{MODEL_NAME}")
         logger.info(f"DEFAULT PARAMS SETTING:\n{model_info}")
     
-    dataset = load_dataset(args.dataset_name, split="train")
     if args.text_only: # to use to ignore images from data
-        dataset = dataset.filter(lambda example: example['image'] == None)
+        dataset = load_dataset(args.dataset_name, split="textual")
     
     if args.img_only: # to use to ignore images from data
-        dataset = dataset.filter(lambda example: example['image'] != None)
+        dataset = load_dataset(args.dataset_name, split="multimodal")
     
     if args.max_samples > 0: # to use for debug
         dataset = dataset.select(range(args.start_idx, args.max_samples))

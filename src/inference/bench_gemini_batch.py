@@ -18,14 +18,20 @@ from dataclasses import dataclass, field
 from collections import Counter, defaultdict 
 from datetime import datetime
 
+
+from google import genai
+from google.genai import types
+
+
+
 #codellama/CodeLlama-34b-Instruct-hf #bigcode/starcoder2-15b-instruct-v0.1 #mistralai/Codestral-22B-v0.1 #deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct #TheBloke/CodeLlama-70B-Instruct-AWQ #casperhansen/llama-3-70b-instruct-awq #hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4
 # gpt-4o-mini-2024-07-18 # gpt-4o-2024-08-06
 
 @dataclass
 class ScriptArguments:
-    model_name: Optional[str] = field(default="gpt-4o-mini-2024-07-18", metadata={"help": "model's HF directory or local path"})
+    model_name: Optional[str] = field(default="gemini-2.5-flash", metadata={"help": "model's HF directory or local path"})
     dataset_name: Optional[str] = field(default="disi-unibo-nlp/MathGames",  metadata={"help": "dataset HF directory"})
-    max_samples: Optional[int] = field(default=-1, metadata={"help": "Maximum number of data to process in train set. Default is -1 to process all data."})
+    max_samples: Optional[int] = field(default=4, metadata={"help": "Maximum number of data to process in train set. Default is -1 to process all data."})
     start_idx: Optional[int] = field(default=0, metadata={"help": "Index of first prompt to process."})
     top_p: Optional[float] = field(default=1.0, metadata={"help": "Top p sampling."})
     n_sampling: Optional[int] = field(default=1, metadata={"help": "Number of prompts to sample for each question"})
@@ -39,22 +45,16 @@ class ScriptArguments:
         if self.text_only and self.img_only:
             raise ValueError("The options 'text_only' and 'img_only' cannot both be True at the same time.")
         
-# Function to encode the image
-def encode_image(image_path):
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode("utf-8")
 
 if __name__ == "__main__":
     load_dotenv()
 
-    OPENAI_KEY = os.getenv("OPENAI_KEY")
-    client = OpenAI(
-        api_key=OPENAI_KEY
-    )
-
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    
     HF_TOKEN = os.getenv("HF_TOKEN")
     login(token=HF_TOKEN)
-    
+
+    client = genai.Client(api_key=GEMINI_API_KEY, http_options={'api_version':'v1alpha'})
     now = datetime.now()
     # Format the date and time as a string
     output_dir = now.strftime("%Y-%m-%d_%H-%M-%S")
@@ -74,10 +74,9 @@ if __name__ == "__main__":
     args = parser.parse_args_into_dataclasses()[0]
     MODEL_NAME =  args.model_name 
 
-    
     if args.text_only: # to use to ignore images from data
         dataset = load_dataset(args.dataset_name, split="textual")
-
+    
     if args.img_only: # to use to ignore images from data
         dataset = load_dataset(args.dataset_name, split="multimodal")
     
@@ -93,71 +92,70 @@ if __name__ == "__main__":
     #######################################
     
     total_promtps = 0
-    
+    json_file_path = f'out/batch_api/{output_dir}/input_batch.json'
+    request_data = []
     for i, item in enumerate(tqdm(dataset)): 
 
         prompt = item['question']
         id = item['id']
-
-        if "o3-mini" in MODEL_NAME.lower() or "o4-mini" in MODEL_NAME.lower() or "gpt-5" in MODEL_NAME.lower():
-            prompt = prompt.strip() + "\n\nEnclose the final answer in \\boxed{}."
-            batch_request = {"custom_id": "", "method": "POST", "url": "/v1/chat/completions", "body": {"model": args.model_name,  "messages": [], "reasoning_effort": "high"}}
-        else:
-            batch_request = {"custom_id": "", "method": "POST", "url": "/v1/chat/completions", "body": {"model": args.model_name, "messages": [{"role": "system", "content": "You are a mathematical expert. Solve the user's problem by reasoning step by step, and enclose the final answer in \\boxed{}."},], "temperature": args.temperature, "max_tokens": 2048}}
-        
-        
         
         if args.text_only:
-            batch_request['body']["messages"].append({"role": "user", "content": prompt})
+            for k in range(args.n_sampling):
+                batch_request = {"key": f"request-{id}-{k}-image", "request": {"contents": [{"parts": [{"text": f"{prompt}"}]}], "generation_config": {"temperature": 0.7}}}
+                request_data.append(batch_request)
 
-        if args.img_only:
+        if args.img_only:            
+
             image_path = f"jpg_images/image_{id}.jpg"
-            base64_image = encode_image(image_path)
-            batch_request['body']["messages"].append({
-                "role": "user",
-                "content":[
-                {
-                    "type": "text",
-                    "text": prompt,
-                },
-                {
-                    "type": "image_url",
-                    "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"},
-                }]
-            })
+            IMAGE_MIME_TYPE = "image/jpg"
 
-        for k in range(args.n_sampling):
-            batch_request["custom_id"] = f"request-{id}-{k}"
-            with open(f'out/batch_api/{output_dir}/input_batch.jsonl', 'a') as f:
-                json.dump(batch_request, f, ensure_ascii=False)
-                f.write("\n")
-                total_promtps+=1
+            image_file = client.files.upload(
+                file=image_path,
+            )
+
+            for k in range(args.n_sampling):
+                batch_request = {
+                    "key": f"request-{id}-{k}-image",
+                    "request": {
+                        "contents": [{
+                            "parts": [
+                                {"text": prompt + "\n\nEnclose the final answer in \\boxed{}."},
+                                {"file_data": {"file_uri": image_file.uri, "mime_type": image_file.mime_type}}
+                            ]
+                        }]
+                    }
+                }
+
+                request_data.append(batch_request)
+
+
+    print(f"\nCreating JSONL file: {json_file_path}")
+    print("len(request_data): ", len(request_data))
+    with open(json_file_path, 'w') as f:
+        for req in request_data:
+            f.write(json.dumps(req) + '\n')
+    
+        
+    logger.info(f"Uploading JSONL file: {json_file_path}")
+    batch_input_file = client.files.upload(
+        file=json_file_path
+        )
+    logger.info(f"Uploaded JSONL file: {batch_input_file.name}")
+
+    logger.info("\nCreating batch job...")
+    # now time string
+    
+    # Format the date and time as a string
+    time_str = now.strftime("%Y-%m-%d_%H-%M-%S")
+
+    batch_job_from_file = client.batches.create(
+        model=MODEL_NAME,
+        src=batch_input_file.name,
+        config=types.UploadFileConfig(display_name=f'requests-{time_str}')
+    )
+    logger.info(f"Created batch job from file: {batch_job_from_file.name}")
+    logger.info("You can now monitor the job status using its name.")
         
     logger.info(f"UNIQUE PROMPTS: {total_promtps / args.n_sampling}")
     logger.info(f"TOTAL PROMPTS: {total_promtps}")
-
-
-    batch_input_file = client.files.create(
-    file=open(f"out/batch_api/{output_dir}/input_batch.jsonl", "rb"),
-    purpose="batch"
-    )
-
-    batch_input_file_id = batch_input_file.id
-
-    batch_obj = client.batches.create(
-        input_file_id=batch_input_file_id,
-        endpoint="/v1/chat/completions",
-        completion_window="24h",
-        metadata={
-        "description": "Running batch inference for Math benchmark."
-        }
-    )
-    logger.info(batch_obj)
-
-    batch_id = batch_obj.id
-    logger.info(f"BATCH ID: {batch_id}")
-
-    with open(f'out/batch_api/{output_dir}/batch_id.txt', 'w') as f:
-        f.write(batch_id)
-
     

@@ -28,7 +28,7 @@ def parse_args():
     parser.add_argument(
         "--dataset_name",
         type=str,
-        default="",
+        default="disi-unibo-nlp/MathGames",
         help="Name of the dataset on Hugging Face."
     )
 
@@ -126,7 +126,10 @@ def make_completion(question, gold, final_answer, judge_model, id=None):
         return ""
 
 def main(jsonl_file_path, dataset_name, ids_to_modify, csv_file_path, judge_model):
-    dataset = load_dataset(dataset_name, split="train")
+    split = "textual" if MODE != "vision" else "multimodal"
+    dataset = load_dataset(dataset_name, split=split)
+
+    # Concatenate the two DataFrames
     df_dataset = pd.DataFrame(dataset)
     
     data = []

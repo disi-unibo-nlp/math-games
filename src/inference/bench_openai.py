@@ -22,7 +22,7 @@ from collections import Counter, defaultdict
 @dataclass
 class ScriptArguments:
     model_name: Optional[str] = field(default="deepseek-reasoner", metadata={"help": "model's HF directory or local path"})
-    dataset_name: Optional[str] = field(default="",  metadata={"help": "dataset HF directory"})
+    dataset_name: Optional[str] = field(default="disi-unibo-nlp/MathGames",  metadata={"help": "dataset HF directory"})
     out_dir: Optional[str] =  field(default="./out", metadata={"help": "outputs directory"})
     max_samples: Optional[int] = field(default=-1, metadata={"help": "Maximum number of data to process in train set. Default is -1 to process all data."})
     start_idx: Optional[int] = field(default=10, metadata={"help": "Index of first prompt to process."})
@@ -116,9 +116,7 @@ if __name__ == "__main__":
 
     MODEL_NAME = args.model_name 
 
-    dataset = load_dataset(args.dataset_name, split="train")
-    if args.text_only: # to use to ignore images from data
-        dataset = dataset.filter(lambda example: example['image'] == None)
+    dataset = load_dataset(args.dataset_name, split="textual")
     
     if args.max_samples > 0: # to use for debug
         dataset = dataset.select(range(args.start_idx, args.max_samples))
