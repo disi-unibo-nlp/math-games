@@ -1,71 +1,50 @@
-# MathGames: A Benchmark from the International Mathematical Games Competition  
+# MathGames: A Benchmark from the International Mathematical and Logical Games Competition  
 
-This repository contains the code and data for our paper:  
-**_Can Large Language Models Win the International Mathematical Games?_**  
+This repository contains the code and data for our **EMNLP 2025 Main Track paper**:  
+📄 [Can Large Language Models Win the International Mathematical Games?](https://aclanthology.org/2025.emnlp-main.488.pdf)
 
 MathGames is a benchmark featuring **2,183 high-quality, playful-style mathematical problems** in an open-ended format (i.e., without multiple-choice answers). The dataset includes:  
 - **1,389 textual problems**  
-- **794 multimodal problems** (requiring both text and images)  
+- **794 multimodal problems** (requiring both text and images)
+
+Problems are sourced from the [International Mathematical and Logical Games Championships](https://it.wikipedia.org/wiki/Campionati_internazionali_di_giochi_matematici), an annual international competition promoting creative and logical problem solving.
+
+> All materials in **MathGames** are sourced from the official online archive of the [PRISTEM Center, Bocconi University](https://giochimatematici.unibocconi.eu), which retains **full rights** to the original content.
+We obtained **explicit authorization** from PRISTEM to use, translate, and distribute the problems and solutions in English, in full compliance with applicable **copyright and licensing regulations**.
+This dataset is provided **exclusively for research and evaluation purposes**, with the primary goal of advancing studies on **mathematical and logical reasoning in LLMs**.
+Use of the data for **model training, commercial redistribution, or derivative works** is **not permitted** without prior written authorization from PRISTEM, Bocconi University.
+ 
 
 ## 📂 Dataset Access  
 
-The dataset is available as a **Hugging Face dataset**. However, to maintain anonymity, we currently provide it only as a JSONL file:  
-📄 **[`data/math_games.jsonl`](data/math_games.jsonl)**  
+The dataset is available as a **Hugging Face dataset**. 
 
-To reconstruct the **multimodal exercises**, please download the corresponding images from our **[Google Drive folder](https://drive.google.com/drive/folders/1Dq32HB9E5HWTdL5HWC66CAmotwFnUpDk?usp=sharing)**.
-
-## 🔎 Dataset Inspection 
-
-Run this script to quickly preprocess and inspect the dataset. Ensure that the images are stored within a local folder `images/`.
+You can easily load the **MathGames** benchmark using the 🤗 **`datasets`** library:
 
 ```python
 from datasets import load_dataset
-from PIL import Image
 
-def load_and_process_image(example):
-    """Loads and processes the image for a given example."""
-    image_path = None
-    try:
-        image_path = example['image']
-        with Image.open(image_path) as img:
-            img = img.convert('RGB')
-            example['image_data'] = img # Store the PIL Image object
-            return example
-    except Exception as e:
-        example['image_data'] = None
-        return example
+# Load the multimodal or textual subset
+ds_multimodal = load_dataset("disi-unibo-nlp/MathGames", split="multimodal")  # or split="textual"
 
-# Load the dataset
-dataset = load_dataset("json", data_files="data/math_games.jsonl")['train']
-
-# Process and store images using map
-dataset = dataset.map(load_and_process_image)
-dataset = dataset.remove_columns(["image"])
-dataset = dataset.rename_column("image_data", "image")
-print(dataset[0])
-
-# Access and use the PIL.Image object directly to display an example image
-if dataset[0]['image'] is not None:
-    img = dataset[0]['image']
-    try:
-        from IPython.display import display # Import only if in an IPython environment
-        display(img) # Use display() in Jupyter notebooks or IPython environments
-    except ImportError:
-        img.show() # Use img.show() for standard Python scripts or if not in an IPython environment
-        
-    # You can now use 'img' directly for further image processing
-    print(f"Image mode: {img.mode}, size: {img.size}")
+# Inspect the first entry
+print(ds_multimodal[0])
 ```
 
-To access text-only problems:
+This is an example of a multimodal entry:
 
-```python
-dataset_text = dataset.filter(lambda example: example['image'] is None)
 ```
-
-To access multimodal problems:
-```python
-dataset_multimodal = dataset.filter(lambda example: example['image'] is not None)
+{
+  'id': '1952',
+  'year': '1996',
+  'type': 'semifinal',
+  'multimodal': 'yes',
+  'category': 'C1 C2 L1 L2 GP',
+  'subject': 'Logic',
+  'answer': 'The sum of four cells is always 24. The grid is:\nRow 1: 1, 6, 3\nRow 2: 9, 8, 7\nRow 3: 2, 5, 4',
+  'question': 'Fill the nine cells of the square above with the numbers from 1 to 9 (1 and 7 have already been placed) such that the sum of the numbers written in each 4-cell square (like those highlighted in the figure) is always the same (figure).',
+  'image': <PIL.JpegImagePlugin.JpegImageFile image mode=RGB size=132x75>
+}
 ```
 
 ---

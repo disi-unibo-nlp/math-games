@@ -31,7 +31,7 @@ load_dotenv()
 @dataclass
 class ScriptArguments:
     model_name: Optional[str] = field(default="Qwen/Qwen2.5-Math-7B-Instruct", metadata={"help": "model's HF directory or local path"})
-    dataset_name: Optional[str] = field(default="",  metadata={"help": "dataset HF directory"})
+    dataset_name: Optional[str] = field(default="disi-unibo-nlp/MathGames",  metadata={"help": "dataset HF directory"})
     out_dir: Optional[str] =  field(default="./out", metadata={"help": "outputs directory"})
     max_samples: Optional[int] = field(default=32, metadata={"help": "Maximum number of data to process in train set. Default is -1 to process all data."})
     start_idx: Optional[int] = field(default=0, metadata={"help": "Index of first prompt to process."})
@@ -179,9 +179,7 @@ if __name__ == "__main__":
             tensor_parallel_size=args.n_gpus,
         )
 
-    dataset = load_dataset(args.dataset_name, split="train")
-    if args.text_only: # to use to ignore images from data
-        dataset = dataset.filter(lambda example: example['image'] == None)
+    dataset = load_dataset(args.dataset_name, split="textual")
 
     if args.id_problems: 
         ids_to_consider = args.id_problems.split(",")

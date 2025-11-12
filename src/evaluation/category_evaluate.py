@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument(
         "--dataset_name",
         type=str,
-        default="",
+        default="disi-unibo-nlp/MathGames",
         help="Name of the dataset on Hugging Face."
     )
 
@@ -34,9 +34,14 @@ def main(file_path, dataset_name):
     except FileNotFoundError:
         raise FileNotFoundError(f"Il file '{file_path}' non è stato trovato.")
 
-    dataset = load_dataset(dataset_name, split="train")
-    print(dataset)
-    df_hf = pd.DataFrame(dataset)
+    dataset = load_dataset('disi-unibo-nlp/MathGames')
+
+    # Convert each split to a pandas DataFrame
+    df_textual = dataset['textual'].to_pandas()
+    df_multimodal = dataset['multimodal'].to_pandas()
+
+    # Concatenate the two DataFrames
+    df_hf = pd.concat([df_textual, df_multimodal], ignore_index=True)
 
     merged_df = pd.merge(df_model, df_hf[['id', 'difficulty', 'category', 'subject', 'year', 'type']], on='id', how='left')
     
@@ -62,7 +67,7 @@ def main(file_path, dataset_name):
         f.write(accuracy_str + '\n')
 
         for year in [1996, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]:
-            year_df = merged_df[merged_df['year'] == year]
+            year_df = merged_df[merged_df['year'] == str(year)]
             shape = year_df.shape[0]
             yes_count = year_df[year_df['model_response'] == 'yes'].shape[0]
             
