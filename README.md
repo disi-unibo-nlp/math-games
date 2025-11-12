@@ -1,4 +1,4 @@
-# MathGames: A Benchmark from the International Mathematical Games Competition  
+# MathGames: A Benchmark from the International Mathematical and Logical Games Competition  
 
 This repository contains the code and data for our **EMNLP 2025 Main Track paper**:  
 📄 [Can Large Language Models Win the International Mathematical Games?](https://aclanthology.org/2025.emnlp-main.488.pdf)
